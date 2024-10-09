@@ -6,8 +6,7 @@ format: html
 
 ## Set up
 ```{r}
-#| message: false
-#| message: false
+
 
 library(dplyr)
 library(tidyr)
@@ -19,7 +18,7 @@ library(readr)
 ```{r}
 #| warning: false
 #| message: false
-#| 
+
 catch_original <- read_csv("https://knb.ecoinformatics.org/knb/d1/mn/v2/object/df35b.302.1")
 ```
 

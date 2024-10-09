@@ -1,0 +1,136 @@
+---
+title: "R Practice: Tidy Data and Joins"
+format: html
+---
+
+# Exercise 1: Practice Joins
+
+## set up
+```{r}
+#| message: false
+#| message: false
+
+library(readr)
+library(dplyr)
+library(here)
+library(lubridate) # for bonus question
+```
+
+## read data
+```{r}
+#| warning: false
+#| message: false
+
+bird_observations <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=53edaa7a0e083013d9bf20322db1780e")
+sites <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=81bf72420e69077097fb0790dcdc63a6")
+surveys <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=b2466fa5cb5ed7ee1ea91398fc291c59")
+taxalist <- read_csv("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-cap.256.10&entityid=58f863b7e3066e68536a9cacdc7bd58e")
+```
+
+## explore data
+```{r}
+colnames(bird_observations)
+
+head(bird_observations)
+
+summary(bird_observations)
+
+#unique(bird_observations$xx)
+
+glimpse(bird_observations)
+
+head(taxalist)
+
+head(sites)
+```
+
+## 10.3 create a subset of bird_observations using 'filter()'
+
+```{r}
+birds_subset <- bird_observations %>% 
+  filter(species_id %in% c('BHCO', 'RWBL')) %>% 
+  filter(site_id %in% c('LI-W', 'NU-C'))
+  
+head(birds_subset)
+```
+
+## 10.4 use 'left_join()' to merge birds_subset with the tables sites
+```{r}
+birds_left <- birds_subset %>% 
+  left_join(y = sites, by = "site_id")
+
+head(birds_left)
+```
+
+## 10.5 Use 'full_join()' to merge birds_subset and sites tables
+```{r}
+birds_full <- birds_subset %>% 
+  full_join(y = sites, by = "site_id")
+
+head(birds_full)
+```
+
+## Use 'inner_join()' to merge birds_subset and taxalist data
+```{r}
+birds_inner <- birds_subset %>% 
+  inner_join(y = taxalist, by = "species_id")
+
+head(birds_inner)
+```
+
+## Use 'left_join()' to merge birds_subset and taxalist data
+```{r}
+birds_inner <- birds_subset %>% 
+  left_join(y = taxalist, by = "species_id")
+
+head(birds_inner)
+```
+
+
+# Exercise 2: Practice Wrangling and Joining Data
+
+# 10.7 Wrangle bird_observations data and merge the data with al the other tables (sites, surveys, and taxalist)
+
+## rename notes to bird_obs_notes
+```{r}
+bird_observations <- bird_observations %>%
+    rename(bird_obs_notes = notes)
+
+head(bird_observations)
+head(taxalist)
+head(sites)
+head(surveys)
+```
+
+## Question 7B
+```{r}
+birds_obs_subset <- bird_observations %>% 
+  full_join(y = taxalist, by = "species_id") %>% 
+  full_join(y = sites, by = "site_id") %>% 
+  full_join(y = surveys, by = c("site_id", "survey_id")) %>% 
+  select(survey_date, common_name, park_name, bird_count, observer)
+
+str(birds_obs_subset)
+
+```
+
+
+## 10.8 Explore observer data and fix the values within this column so that all values are in the same format
+
+```{r}
+bird_obs_subset <- birds_obs_subset %>% 
+  mutate(observer = if_else(condition = observer == "Josh Burns", 
+                            true = "J. Burns", 
+                            false = observer))
+
+unique(bird_obs_subset$observer)
+```
+
+
+
+
+
+
+
+
+
