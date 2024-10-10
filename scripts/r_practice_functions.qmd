@@ -1,0 +1,95 @@
+---
+title: "R Practice: Functions"
+author: "Ben Grime"
+format: html
+---
+
+## Question 1
+```{r}
+double_it <- function(x) {
+  return(x*2)
+}
+
+double_it(x=4)
+```
+
+## Question 2
+```{r}
+exclaim_age <- function(age){
+  return(paste("i am", age, "years old"))
+}
+
+exclaim_age(age = 12)
+```
+
+
+## Question 3
+```{r}
+# "find_max() function" #
+find_max <- function(value_1, value_2) {
+  if(value_1 == value_2) {
+    stop("Values must be different from each other")}
+    if (value_1 > value_2) {
+        return(value_1)
+    }
+    else if (value_2 > value_1) {
+        return(value_2)
+    }
+}
+
+find_max(4, 8)
+5 * find_max(4,5)
+```
+
+## Question 4
+```{r}
+find_max(4, "cow")
+```
+## Question 4d
+```{r}
+# "find_max() function" #
+find_max <- function(value_1, value_2, equal_ok = FALSE) {
+  # `|` is the logical OR operator
+    # `!=` is the not-equal-to operator
+    if (is.numeric(value_1) != TRUE | is.numeric(value_2) != TRUE) {
+        # alt expression: is.numeric(value_1) == FALSE | is.numeric(value_2) == FALSE
+        stop("Value must be a numeric type.")
+    }
+    
+    if (value_1 == value_2) {
+        ### the values are equal; is value of the equal_ok argument TRUE?
+        if(equal_ok) return(value_1)
+        ### if equal_ok is not TRUE, then report an error
+        stop("Values must be different from each other.")
+    }
+    
+  if (value_1 > value_2) {
+        return(value_1)
+    }
+    else if (value_2 > value_1) {
+        return(value_2)
+    }
+}
+
+find_max(4, 4)
+find_max(4, 4, equal_ok = TRUE)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
